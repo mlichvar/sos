@@ -905,6 +905,14 @@ class Plugin(object):
         """
         self.add_copy_spec(list(self.files))
 
+    def setup_verify(self):
+        if not hasattr(self, "verify_packages") or not self.verify_packages:
+            return
+        pm = self.policy().package_manager
+        verify_cmd = pm.verify_package_list(self.verify_packages)
+        if verify_cmd:
+            self.add_cmd_output(verify_cmd)
+
     def postproc(self):
         """Perform any postprocessing. To be replaced by a plugin if required.
         """
